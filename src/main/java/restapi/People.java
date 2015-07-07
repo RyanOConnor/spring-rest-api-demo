@@ -6,11 +6,6 @@ public class People {
 	private String firstName;
 	private String lastName;
 	
-	public People(String firstName, String lastName) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
-	
 	public People(int id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
