@@ -1,0 +1,1 @@
+INSERT INTO people (ID, FIRSTNAME, LASTNAME) VALUES (0, 'John', 'Doe');
