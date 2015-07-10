@@ -21,8 +21,7 @@ public class PeopleDAOImpl implements PeopleDAO {
 		if(person == null) return;
 		String query = "INSERT INTO people (firstname, lastname) VALUES (?, ?)";
 		try {
-			jdbcTemplate.update(query, new Object[] { person.getFirstName(), 
-												  	  person.getLastName() });
+			jdbcTemplate.update(query, new Object[] { person.getFirstName(), person.getLastName() });
 		} catch (DataAccessException ex) {
 			// Log exception
 		}
@@ -67,7 +66,6 @@ public class PeopleDAOImpl implements PeopleDAO {
 		try{
 			String deleteRel = "DELETE FROM relationships WHERE p_id1 = ? OR p_id2 = ?";
 			jdbcTemplate.update(deleteRel, new Object[] { id, id });
-			
 			String deletePeople = "DELETE FROM people WHERE id = ?";
 			jdbcTemplate.update(deletePeople, new Object[] { id });
 		} catch (DataAccessException ex) {
