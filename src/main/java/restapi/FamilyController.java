@@ -13,7 +13,7 @@ public class FamilyController {
 
 	@RequestMapping("/createRelationship")
 	public void createRelationship(@RequestParam(value="p_id1", defaultValue="-1") int p_id1, 
-								   @RequestParam(value="p_id2", defaultValue="-1") int p_id2) {
+				       @RequestParam(value="p_id2", defaultValue="-1") int p_id2) {
 		if(p_id1 == -1 || p_id2 == -1) return;
 		familyDao.insertRelationship(new Relationship(p_id1, p_id2));
 	}
