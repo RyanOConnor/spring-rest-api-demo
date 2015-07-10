@@ -41,7 +41,6 @@ public class FamilyDAOImpl implements FamilyDAO {
 		} catch (DataAccessException ex) {
 			// Log exception
 		} 
-		
 		return new Family(familyMembers);
 	}
 }
