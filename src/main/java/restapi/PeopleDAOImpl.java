@@ -31,16 +31,13 @@ public class PeopleDAOImpl implements PeopleDAO {
 		People person = null;
 		String query = "SELECT * FROM people WHERE id = ?";
 		List<People> people = null;
-		
 		try {
 			people = jdbcTemplate.query(query, new PeopleMapper(), new Object[] { id });
 		} catch (DataAccessException ex) {
 			// Log exception
 		}
-		
 		if(people != null && !people.isEmpty())
 			person = (People) people.get(0);
-		
 		return person;
 	}
 		
