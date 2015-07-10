@@ -31,11 +31,11 @@ public class FamilyDAOImpl implements FamilyDAO {
 	public Family getFamilyMembers(int p_id) {
 		List<People> familyMembers = null;
 		String query = "SELECT * "
-				      + "FROM people "
-				      + "WHERE id IN ( "
-				      + "	SELECT p_id2 "
-				      + "	FROM relationships "
-				      + "	WHERE p_id1 = ? )";
+		 	     + "FROM people "
+			     + "WHERE id IN ( "
+	     	      	     + "	SELECT p_id2 "
+			     + "	FROM relationships "
+			     + "	WHERE p_id1 = ? )";
 		try {
 			familyMembers = jdbcTemplate.query(query, new PeopleMapper(), new Object[] { p_id });
 		} catch (DataAccessException ex) {
