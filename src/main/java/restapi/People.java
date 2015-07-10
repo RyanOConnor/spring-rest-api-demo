@@ -12,6 +12,11 @@ public class People {
 		this.lastName = lastName;
 	}
 	
+	public People(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -26,6 +31,10 @@ public class People {
 	
 	public String getFullName() {
 		return firstName + " " + lastName;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void setFirstName(String firstName) {

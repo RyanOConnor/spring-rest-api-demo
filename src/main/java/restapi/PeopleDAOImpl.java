@@ -1,14 +1,11 @@
 package restapi;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 @Component
 public class PeopleDAOImpl implements PeopleDAO {
@@ -22,13 +19,10 @@ public class PeopleDAOImpl implements PeopleDAO {
 	
 	public void insert(People person) {
 		if(person == null) return;
-		
-		String query = "INSERT INTO people (ID, FirstName, LastName) VALUES (?, ?, ?)";
-		
+		String query = "INSERT INTO people (firstname, lastname) VALUES (?, ?)";
 		try {
-			jdbcTemplate.update(query, new Object[] { person.getId(),
-												  person.getFirstName(), 
-												  person.getLastName() });
+			jdbcTemplate.update(query, new Object[] { person.getFirstName(), 
+												  	  person.getLastName() });
 		} catch (DataAccessException ex) {
 			// Log exception
 		}
@@ -36,23 +30,23 @@ public class PeopleDAOImpl implements PeopleDAO {
 	
 	public People findById(int id) {
 		People person = null;
-		String query = "SELECT * FROM people WHERE ID = ?";
+		String query = "SELECT * FROM people WHERE id = ?";
 		List<People> people = null;
 		
 		try {
 			people = jdbcTemplate.query(query, new PeopleMapper(), new Object[] { id });
 		} catch (DataAccessException ex) {
 			// Log exception
-		} finally {
-			if(people != null && !people.isEmpty())
-				person = (People) people.get(0);
 		}
+		
+		if(people != null && !people.isEmpty())
+			person = (People) people.get(0);
 		
 		return person;
 	}
-	
+		
 	public void changeFirstName(int id, String firstName) {
-		String query = "UPDATE people SET FirstName = ? WHERE ID = ?";
+		String query = "UPDATE people SET FirstName = ? WHERE id = ?";
 		try {
 			jdbcTemplate.update(query, new Object[] { firstName, id });
 		} catch(DataAccessException ex) {
@@ -61,7 +55,7 @@ public class PeopleDAOImpl implements PeopleDAO {
 	}
 	
 	public void changeLastName(int id, String lastName) {
-		String query = "UPDATE people SET LastName = ? WHERE ID = ?";
+		String query = "UPDATE people SET LastName = ? WHERE id = ?";
 		try {
 			jdbcTemplate.update(query, new Object[] { lastName, id });
 		} catch(DataAccessException ex) {
@@ -70,16 +64,14 @@ public class PeopleDAOImpl implements PeopleDAO {
 	}
 		
 	public void deleteById(int id) {
-		String query = "DELETE FROM people WHERE ID = ?";
-		jdbcTemplate.update(query, new Object[] { id });
-	}
-	
-	class PeopleMapper implements RowMapper<People> {
-		
-		public People mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new People(rs.getInt("id"), 
-			   	              rs.getString("firstname"), 
-						      rs.getString("lastname"));
+		try{
+			String deleteRel = "DELETE FROM relationships WHERE p_id1 = ? OR p_id2 = ?";
+			jdbcTemplate.update(deleteRel, new Object[] { id, id });
+			
+			String deletePeople = "DELETE FROM people WHERE id = ?";
+			jdbcTemplate.update(deletePeople, new Object[] { id });
+		} catch (DataAccessException ex) {
+			// Log exception
 		}
 	}
 }
